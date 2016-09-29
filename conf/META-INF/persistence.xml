@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="1.0" xmlns="http://java.sun.com/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd">
+    <persistence-unit name="secqme" transaction-type="RESOURCE_LOCAL">
+        <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+
+        <class>com.secqme.domain.converter.JsonMapConverter</class>
+        <class>com.secqme.domain.converter.JSONObjectConverter</class>
+
+        <class>com.secqme.domain.model.ContactVO</class>
+        <class>com.secqme.domain.model.CountryVO</class>
+        <class>com.secqme.domain.model.LanguageVO</class>
+        <class>com.secqme.domain.model.PartnerVO</class>
+        <class>com.secqme.domain.model.TimeZoneVO</class>
+        <class>com.secqme.domain.model.TrackingLogVO</class>
+        <class>com.secqme.domain.model.UserTrackingLogVO</class>
+        <class>com.secqme.domain.model.UserVO</class>
+
+        <class>com.secqme.domain.model.ar.ARMarketMessageTemplateVO</class>
+        <class>com.secqme.domain.model.ar.ARMessageTemplateVO</class>
+
+        <class>com.secqme.domain.model.billing.BillingCycleVO</class>
+        <class>com.secqme.domain.model.billing.BillingLogVO</class>
+        <class>com.secqme.domain.model.billing.BillingPkgVO</class>
+        <class>com.secqme.domain.model.billing.MarketBillingPkgVO</class>
+        <class>com.secqme.domain.model.billing.MarketVO</class>
+
+        <class>com.secqme.domain.model.crime.CrimeReportVO</class>
+
+        <class>com.secqme.domain.model.event.EventLogVO</class>
+        <class>com.secqme.domain.model.event.QuickEventTemplateVO</class>
+        <class>com.secqme.domain.model.event.SavedEventVO</class>
+        <class>com.secqme.domain.model.event.SecqMeEventVO</class>
+        <class>com.secqme.domain.model.event.ShareEventVO </class>
+
+        <class>com.secqme.domain.model.location.GoogleGeoCodeCacheVO</class>
+        <class>com.secqme.domain.model.location.GooglePlaceCacheVO</class>
+
+        <class>com.secqme.domain.model.notification.CampaignsVO</class>
+        <class>com.secqme.domain.model.notification.SocialNetworkVO</class>
+        <class>com.secqme.domain.model.notification.UserSNSConfigVO</class>
+        <class>com.secqme.domain.model.notification.email.EmailLogVO</class>
+        <class>com.secqme.domain.model.notification.sms.SMSLogVO</class>
+        <class>com.secqme.domain.model.notification.sms.SmsCountryVO</class>
+        <class>com.secqme.domain.model.notification.sms.SmsGateWayVO</class>
+        <class>com.secqme.domain.model.notification.sns.SNSLogVO</class>
+
+        <class>com.secqme.domain.model.payment.GiftPaymentLogVO</class>
+        <class>com.secqme.domain.model.payment.GooglePaymentLogVO</class>
+        <class>com.secqme.domain.model.payment.ItunePaymentLogVO</class>
+        <class>com.secqme.domain.model.payment.PayPalIPNLogVO</class>
+        <class>com.secqme.domain.model.payment.PaymentClickVO</class>
+        <class>com.secqme.domain.model.payment.PaymentGWVO</class>
+        <class>com.secqme.domain.model.payment.PaymentHistoryVO</class>
+        <class>com.secqme.domain.model.payment.PendingPaymentVO</class>
+        <class>com.secqme.domain.model.payment.PricingPackageVO</class>
+        <class>com.secqme.domain.model.payment.UserPaymentInfoVO</class>
+        <class>com.secqme.domain.model.payment.UserSubscriptionInfoLogVO</class>
+        <class>com.secqme.domain.model.payment.UserSubscriptionInfoVO</class>
+
+        <class>com.secqme.domain.model.promocode.PromoCodeVO</class>
+        <class>com.secqme.domain.model.promocode.PromoCodeLogVO</class>
+        <class>com.secqme.domain.model.promocode.PromoCodeRewardVO</class>
+
+        <class>com.secqme.domain.model.promotion.PromotionVO</class>
+
+        <class>com.secqme.domain.model.pushmessage.PushMessageLogVO</class>
+        <class>com.secqme.domain.model.pushmessage.UserPushMessageToken</class>
+
+        <class>com.secqme.domain.model.referral.ReferralLogVO</class>
+        <class>com.secqme.domain.model.referral.ReferralProgramMarketingTextVO</class>
+        <class>com.secqme.domain.model.referral.ReferralProgramVO</class>
+        <class>com.secqme.domain.model.referral.ReferralReportVO</class>
+
+        <class>com.secqme.domain.model.safezone.SafeZoneVO</class>
+
+        <class>com.secqme.domain.model.util.MarketingTextConfigVO</class>
+        <class>com.secqme.domain.model.util.ServerParamVO</class>
+
+        <properties>
+            <property name="javax.persistence.jdbc.driver" value="@javax.persistence.jdbc.driver@"/>
+            <property name="javax.persistence.jdbc.url" value="@javax.persistence.jdbc.url@"/>
+            <property name="javax.persistence.jdbc.user" value="@javax.persistence.jdbc.user@"/>
+            <property name="javax.persistence.jdbc.password" value="@javax.persistence.jdbc.password@"/>
+            <property name="eclipselink.weaving" value="static"/>
+            <property name="eclipselink.cache.shared.default" value="false"/>
+        </properties>
+    </persistence-unit>
+</persistence>

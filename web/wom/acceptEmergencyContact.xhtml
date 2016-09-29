@@ -1,0 +1,45 @@
+<ui:composition
+        template="/WEB-INF/templates/v1/simple.xhtml"
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+        xmlns:ui="http://java.sun.com/jsf/facelets">
+    <ui:define name="metadata">
+        <f:metadata>
+            <f:viewParam name="code" value="#{manageEmergencyContactBean.contactToken}" />
+            <f:viewParam name="action" value="#{manageEmergencyContactBean.action}" />
+            <f:event type="preRenderView" listener="#{manageEmergencyContactBean.initEmergencyContactDetails}"/>
+        </f:metadata>
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form>
+            <div class="container error-page">
+                <div class="row">
+                    <div class="col-sm-6 col-sm-offset-3 error-text">
+                        <div class="error-header">
+                            <h:graphicImage library="v1" name="images/logo-blue-long_#{localeManager.getSupportedLanguage(request.locale).getCode()}.png" />
+                        </div>
+                        <h2><h:outputText value="#{msgs['emergencycontact.accept.title']}" /></h2>
+                        <p>
+                            <h:outputFormat value="#{msgs['emergencycontact.accept.body']}">
+                                <f:param value="#{manageEmergencyContactBean.userName}"/>
+                            </h:outputFormat>
+                        </p>
+                        <ul class="list-inline social-buttons" style="padding-top:40px;">
+                            <li>
+                                <a href="http://bit.ly/VmCZrT" class="appstore"><img src="http://watchovermeapp.com/img/appstore.png" style="height:3.125em;"/></a>
+                            </li>
+                            <li>
+                                <a href="http://bit.ly/YrCYUh" class="googleplay"><img src="http://watchovermeapp.com/img//googleplay.png" style="height:3.125em;"/></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>

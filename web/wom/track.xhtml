@@ -1,0 +1,158 @@
+<ui:composition
+        template="/WEB-INF/templates/v1/default.xhtml"
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+        xmlns:ui="http://java.sun.com/jsf/facelets">
+    <ui:define name="metadata">
+        <f:metadata>
+            <f:viewParam name="trackingpin" value="#{trackingBean.trackingPin}"/>
+            <f:event type="preRenderView" listener="#{trackingBean.initTrackingDetail()}"/>
+        </f:metadata>
+    </ui:define>
+    <ui:define name="content">
+        <h:form>
+            <div class="track-head">
+                <div class="container">
+                    <h2 class="pull-left"><h:outputText value="#{msgs['tracking.title']}" /></h2>
+                    <p class="link pull-right hidden-xs">
+                        <a href="http://bit.ly/VmCZrT" class="appstore"><img src="img/appstore.png"/></a>
+                        <a href="http://bit.ly/YrCYUh" class="googleplay"><img src="img/googleplay.png"/></a>
+                    </p>
+                </div>
+            </div>
+            <div class="track">
+                <div class="container">
+                    <div class="main">
+                        <div id="mymap">
+                            <p:outputPanel id="mapPanel" rendered="#{trackingBean.mapVO != null }">
+                                <!--<div id="map-canvas2" style="height:100%; width:100%;text-align: center; max-width: none;">-->
+                                <div id="map-canvas2" class="map"></div>
+                            </p:outputPanel>
+                            <p:outputPanel id="mapNotAvailablePanel" rendered="#{trackingBean.mapVO == null}">
+                                <br/>
+                                <h:outputFormat value="#{msgs['tracking.missingmap']}">
+                                    <f:param value="#{trackingBean.secqMeEventVO.userVO.nickName}"/>
+                                </h:outputFormat>
+                                <br/>
+                            </p:outputPanel>
+                        </div>
+
+                        <div class="dashboard">
+                            <p class="toggle hidden-xs">
+                                <a href="#panel" data-toggle="collapse" class="close">&#xD7;</a>
+                                <a href="#panel" data-toggle="collapse" class="small btn-block"><h:outputText value="#{msgs['tracking.panel']}" /></a>
+                            </p>
+
+                            <div id="panel" class="collapse in">
+                                <table class="table">
+                                    <tbody>
+                                    <tr>
+                                        <td colspan="2" class="no-border">
+                                        <span class="wom-label"><h:outputText value="#{trackingBean.secqMeEventVO.userVO.nickName}"/>
+                                        </span>
+                                        <span class="wom-value">
+                                             <h:outputFormat value="#{msgs['tracking.timezone']}">
+                                                 <f:param value="#{trackingBean.timezoneStr}"/>
+                                             </h:outputFormat>
+                                        </span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+
+                                        <td width="50%"><span class="wom-label"><h:outputText value="#{msgs['tracking.starttime']}" /></span>
+                                            <span class="wom-value" id="startTrackingTime"><h:outputText value="#{trackingBean.eventRegTime}"/></span>
+                                        </td>
+                                        <td width="50%"><span class="wom-label"><h:outputText value="#{msgs['tracking.registeredat']}" /></span>
+                                            <span class="wom-value" id="currentTrackingTime"><h:outputText value="#{trackingBean.currentTrackingTime}"/></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="wom-label"><h:outputText value="#{msgs['tracking.status']}" /></span><span
+                                                class="wom-value" id="eventStatus"><h:outputText
+                                                value="#{trackingBean.secqMeEventVO.status}"/></span>
+                                        </td>
+                                        <td><span class="wom-label"><h:outputText value="#{msgs['tracking.confirmsafety']}" /></span><span class="wom-value" id="confirmSafety">
+                                        <h:outputText id="safetyconfirmtime"
+                                                      value="#{trackingBean.confirmSafetyTime}"
+                                                      rendered="#{trackingBean.renderIamOKButton}"/>
+                                        <h:outputText value="#{msgs['commonLabelNo']}"
+                                                      rendered="#{!trackingBean.renderIamOKButton}"/></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" class="no-border"><span class="wom-label"><h:outputText value="#{msgs['tracking.notes']}" /></span><span
+                                                class="wom-value" id="eventNotes"> <h:outputText
+                                                value="#{trackingBean.formatedEventMessage}"
+                                                escape="false"/></span></td>
+                                    </tr>
+                                    <p:outputPanel id="mediaPanel" rendered="#{trackingBean.picURL != null ||
+                                                     trackingBean.emergencyVideoItems != null}">
+                                        <tr>
+                                            <td colspan="2" class="no-border">
+                                                <span class="wom-label"><h:outputText value="#{msgs['tracking.media']}" /></span>
+                                                <ul class="wom-media list-unstyled" id="eventMedia">
+                                                    <p:outputPanel id="picturePanel" rendered="#{trackingBean.pictureFileURLList !=null}">
+                                                        <ui:repeat value="#{trackingBean.pictureFileURLList}" var="picURL">
+                                                            <li class=" pull-left">
+                                                                <a class="fancybox" rel="group" href="#{picURL}">
+                                                                    <h:graphicImage value="#{picURL}" style="height:65px;"/>
+                                                                </a>
+                                                            </li>
+                                                        </ui:repeat>
+                                                    </p:outputPanel>
+                                                    <p:outputPanel rendered="#{trackingBean.emergencyVideoItems != null}">
+                                                        <ui:repeat value="#{trackingBean.videoFileURLList}" var="videoURL">
+                                                            <li class=" pull-left">
+                                                                <p:lightBox>
+                                                                    <h:outputLink value="#">
+                                                                        <img src="img/videoplay.jpg" style="height:65px;"/>
+                                                                    </h:outputLink>
+                                                                    <f:facet name="inline">
+                                                                        <video controls="controls" style="width:100%;">
+                                                                            <source src="#{videoURL}" type="video/mp4"/>
+                                                                        </video>
+                                                                    </f:facet>
+                                                                </p:lightBox>
+                                                            </li>
+                                                        </ui:repeat>
+                                                    </p:outputPanel>
+                                                </ul>
+                                            </td>
+                                        </tr>
+                                    </p:outputPanel>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <p class="text-center visible-xs"><a href="http://bit.ly/VmCZrT" class="appstore"><img
+                                src="img/appstore.png"/></a></p><span class="text-center visible-xs"><a
+                            href="http://bit.ly/YrCYUh" class="googleplay"><img src="img/googleplay.png"/></a></span>
+                    </div>
+                </div>
+            </div>
+        </h:form>
+    </ui:define>
+
+    <ui:define name="scripts">
+        <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB7-cQl3C9HgbE19Ovp3KerwkMeCDvFexo&amp;sensor=false"></script>
+
+        <script type="text/javascript" src="#{request.contextPath}/wom/js/moment.min.js"/>
+        <script type="text/javascript" src="#{request.contextPath}/wom/js/moment-timezone-with-data-2010-2020.js"/>
+
+        <script type="text/javascript">
+            var zoomLevel = #{trackingBean.mapVO.zoomLevel};
+            var trackingPin = '#{trackingBean.trackingPin}';
+            var mapCenterLocation = new google.maps.LatLng(#{trackingBean.mapCenterLocStr});
+
+            $(document).ready(function() {
+                $(".fancybox").fancybox();
+            });
+        </script>
+        <script type="text/javascript" src="#{request.contextPath}/wom/js/tracking.js"/>
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,91 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+      dir="auto">
+<f:view contentType="text/html">
+    <h:head>
+        <meta charset="utf-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <meta name="description" content="Whether you're going for a run or walking home alone, just let Watch Over Me know and it'll watch over you via GPS. We'll notify your emergency contacts in case you need help"/>
+        <meta name="keywords"
+              content="best personal safety app, best women safety app, best safety app,
+          tracking app, rescue app, first aid app, iphone first aid app, android first aid app, automatic emergency alert,
+          sos emergency alert, women rescue, best campus app, panic button, personal security, personal guard,
+          virtual security guard, emergency contact, best free android app, best free ios app,
+          best app for iphone, best app for android, best safety app for iphone, best safety app for android,
+          personal protection app, women protection app, best app for women, best app for female, panic button app,
+          best panic button app, best panic button app for android, best panic button app for iphone,
+          best safety tool, best iphone safety tool, best android safety tool, best women safety app,
+          best women safety app for iphone, best women safety app for android"/>
+
+        <!-- TODO -->
+        <meta property="og:title" content="Watch Over Me - award-winning app that turns your smartphone into a powerful safety device"/>
+        <meta property="og:type" content="website"/>
+        <meta property="og:url" content="http://watchovermeapp.com"/>
+        <meta property="og:image" content="http://watchovermeapp.com/img/fb-post-img.jpg"/>
+        <title>Watch Over Me</title>
+        <link rel="shortcut icon" href="img/logo-blue.png"/>
+        <link rel="stylesheet" href="newcss/bootstrap.css"/>
+        <link rel="stylesheet" href="newcss/main.css"/>
+        <!-- Custom Fonts -->
+        <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+
+        <link rel="stylesheet" href="newcss/jquery.fancybox.css" type="text/css" media="screen" />
+    </h:head>
+
+    <h:body pt:dir="auto">
+
+        <ui:insert name="header">
+            <ui:include src="_header.xhtml" />
+        </ui:insert>
+
+        <ui:insert name="content"></ui:insert>
+
+        <ui:insert name="footer" >
+            <ui:include src="_footer.xhtml" />
+        </ui:insert>
+
+        <script>
+            var fb_param = {};
+            fb_param.pixel_id = '6015221439907';
+            fb_param.value = '0.00';
+            fb_param.currency = 'USD';
+            (function () {
+                var fpw = document.createElement('script');
+                fpw.async = true;
+                fpw.src = '//connect.facebook.net/en_US/fp.js';
+                var ref = document.getElementsByTagName('script')[0];
+                ref.parentNode.insertBefore(fpw, ref);
+            })();
+        </script>
+        <noscript><img height="1" width="1" alt="" style="display:none" src="https://www.facebook.com/offsite_event.php?id=6015221439907&amp;value=0&amp;currency=USD"/></noscript>
+
+        <script src="js/jquery-1.11.0.min.js"></script>
+        <script src="js/bootstrap.js"></script>
+        <script type="text/javascript" src="js/jquery.fancybox.pack.js"></script>
+        <script src="js/main.js"></script>
+
+        <script type="text/javascript">
+            var API_BASE_URL = "#{request.contextPath}";
+            var API_BASE_WS;
+            if (window.location.protocol == 'http:') {
+                API_BASE_WS = 'ws://' + window.location.host + "#{request.contextPath}";
+            } else {
+                API_BASE_WS = 'wss://' + window.location.host + "#{request.contextPath}";
+            }
+            var CONTEXT_PATH = "#{request.contextPath}";
+        </script>
+
+        <ui:insert name="scripts"></ui:insert>
+
+        <ui:insert name="ga" >
+            <ui:include src="_ga.xhtml" />
+        </ui:insert>
+    </h:body>
+</f:view>
+</html>

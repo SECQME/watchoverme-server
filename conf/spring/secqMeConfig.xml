@@ -1,0 +1,536 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+    <import resource="secqMeDAOConfig.xml"/>
+
+    <bean id="secqConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="location">
+            <value>classpath:SystemConfig.properties</value>
+        </property>
+    </bean>
+
+    <bean id="cacheUtil" class="com.secqme.util.cache.DefaultCacheUtil"/>
+
+    <bean id="quickEventManager" class="com.secqme.manager.DefaultQuickEventManager"
+          parent="baseManager" init-method="refreshSetting">
+        <constructor-arg ref="quickEventTemplateDAO"/>
+    </bean>
+
+    <bean id="emailAddressUtil" class="com.secqme.util.validator.DefaultEmailAddressUtil"/>
+    <bean id="mobileNumberUtil" class="com.secqme.util.validator.DefaultMobileNumberUtil"/>
+
+    <bean id="s3MediaFileManager" class="com.secqme.util.io.S3MediaFileManager">
+        <constructor-arg>
+            <value>${aws.credential.accessKeyId}</value>
+        </constructor-arg>
+        <constructor-arg>
+            <value>${aws.credential.secretKey}</value>
+        </constructor-arg>
+        <constructor-arg ref="eventLogDAO"/>
+        <constructor-arg>
+            <value>${aws.s3.buckets.profilePicture}</value>
+        </constructor-arg>
+        <constructor-arg>
+            <value>${aws.s3.buckets.eventAudio}</value>
+        </constructor-arg>
+        <constructor-arg>
+            <value>${aws.s3.buckets.eventImage}</value>
+        </constructor-arg>
+        <constructor-arg>
+            <value>${aws.s3.buckets.eventVideo}</value>
+        </constructor-arg>
+        <constructor-arg>
+            <value>${aws.s3.buckets.crimeReport}</value>
+        </constructor-arg>
+    </bean>
+
+    <bean id="restUtil" class="com.secqme.util.rest.DefaultRestUtil"/>
+
+    <bean id="locationUtil" class="com.secqme.util.DefaultLocationUtil">
+        <constructor-arg ref="restUtil"/>
+        <constructor-arg>
+            <value>${country.by.location.webservice.url}</value>
+        </constructor-arg>
+        <constructor-arg>
+            <value>${country.ip.webservice.url}</value>
+        </constructor-arg>
+        <constructor-arg>
+            <value>${time.zone.webservice.url}</value>
+        </constructor-arg>
+        <constructor-arg>
+            <value>${google.place.url}</value>
+        </constructor-arg>
+        <constructor-arg ref="timeZoneDAO"/>
+        <constructor-arg ref="googleGeoCodeCacheDAO"/>
+        <constructor-arg ref="googlePlaceCacheDAO"/>
+        <constructor-arg value="5000"/>
+        <constructor-arg value="1800"/>
+    </bean>
+
+    <bean id="bitlyUrlShortenerService" class="com.secqme.util.shorturl.BitlyUrlShortenerService">
+        <constructor-arg>
+            <value>${bit.ly.login}</value>
+        </constructor-arg>
+        <constructor-arg>
+            <value>${bit.ly.apikey}</value>
+        </constructor-arg>
+        <constructor-arg ref="restUtil"/>
+    </bean>
+
+    <bean id="branchUrlShortenerService" class="com.secqme.util.shorturl.BranchUrlShortenerService">
+        <constructor-arg>
+            <value>${branch_io.api_key}</value>
+        </constructor-arg>
+        <constructor-arg ref="restUtil"/>
+    </bean>
+
+    <bean id="textUtil" class="com.secqme.util.DefaultTextUtil">
+        <constructor-arg ref="marketingTextConfigDAO"/>
+    </bean>
+
+    <bean id="pronounceablePasswordGenerator" class="com.secqme.util.PronounceablePasswordGenerator">
+    </bean>
+
+    <bean id="validatorFactory" class="javax.validation.Validation"
+          factory-method="buildDefaultValidatorFactory"/>
+    <bean id="myValidator" factory-bean="validatorFactory"
+          factory-method="getValidator"/>
+
+    <bean id="velocityEngine" class="org.springframework.ui.velocity.VelocityEngineFactoryBean">
+        <property name="velocityProperties">
+            <value>
+                resource.loader=class
+                class.resource.loader.class=org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+            </value>
+        </property>
+    </bean>
+
+    <bean id="smsManager" class="com.secqme.util.notification.sms.DefaultSMSManager">
+        <constructor-arg ref="smsGWDAO"/>
+        <constructor-arg ref="smsLogDAO"/>
+        <constructor-arg ref="restUtil"/>
+        <constructor-arg ref="textUtil"/>
+        <constructor-arg ref="cacheUtil"/>
+        <constructor-arg ref="mobileNumberUtil"/>
+        <constructor-arg ref="freemarkerARTemplateEngine"/>
+    </bean>
+
+    <bean id="snsManager" class="com.secqme.util.notification.sns.DefaultSNSManager">
+        <constructor-arg>
+            <list>
+                <ref bean="fbSNService"/>
+            </list>
+        </constructor-arg>
+        <constructor-arg ref="userDAO" />
+        <constructor-arg ref="userSNSConfigDAO"/>
+    </bean>
+
+    <bean id="myFacebookUtil" class="com.secqme.sns.DefaultFacebookUtil">
+        <constructor-arg ref="socialNetworkDAO"/>
+        <constructor-arg>
+            <value>${facebookApp}</value>
+        </constructor-arg>
+        <constructor-arg>
+            <value>${fbAuthURL}</value>
+        </constructor-arg>
+        <constructor-arg>
+            <value>${facebookRenewTokenURL}</value>
+        </constructor-arg>
+        <constructor-arg ref="restUtil"/>
+    </bean>
+
+    <bean id="myTwitterUtil" class="com.secqme.sns.DefaultTwitterUtil">
+        <constructor-arg ref="socialNetworkDAO"/>
+        <constructor-arg>
+            <value>${twitterApp}</value>
+        </constructor-arg>
+    </bean>
+
+    <bean id="fbSNService" class="com.secqme.util.notification.sns.FacebookSNSService">
+        <constructor-arg ref="myFacebookUtil"/>
+        <constructor-arg ref="restUtil"/>
+        <constructor-arg ref="freemarkerARTemplateEngine" />
+        <constructor-arg ref="userDAO"/>
+        <constructor-arg ref="snsLogDAO"/>
+    </bean>
+
+    <bean id="twSNService" class="com.secqme.util.notification.sns.TwitterSNSService">
+        <constructor-arg ref="myTwitterUtil"/>
+    </bean>
+
+    <bean id="mandrillEmailService" class="com.secqme.util.notification.email.MandrillEmailService">
+        <constructor-arg ref="mandrillARTemplateEngine"/>
+        <constructor-arg ref="emailLogDAO"/>
+        <constructor-arg ref="restUtil"/>
+    </bean>
+
+    <bean id="sparkPostEmailService" class="com.secqme.util.notification.email.SparkPostEmailService">
+        <constructor-arg ref="mandrillARTemplateEngine"/>
+        <constructor-arg ref="emailLogDAO"/>
+        <constructor-arg ref="restUtil"/>
+    </bean>
+
+    <bean id="emailLogManager" class="com.secqme.manager.notification.DefaultEmailLogManager" parent="baseManager">
+    </bean>
+
+    <!-- Template manager -->
+
+    <!-- @Deprecated -->
+    <!--<bean id="myPushService" class="com.secqme.util.notification.push.DefaultPushService">-->
+        <!--<constructor-arg ref="PushMessageLogDAO"/>-->
+        <!--<constructor-arg>-->
+            <!--<value>${ios.pushmessage.cert.file.path}</value>-->
+        <!--</constructor-arg>-->
+        <!--<constructor-arg>-->
+            <!--<value>${ios.pushmessage.cert.password}</value>-->
+        <!--</constructor-arg>-->
+        <!--<constructor-arg>-->
+            <!--<value>${ios.pushmessage.environment}</value>-->
+        <!--</constructor-arg>-->
+        <!--<constructor-arg>-->
+            <!--<value>${google.gcm.push.message.api.key}</value>-->
+        <!--</constructor-arg>-->
+        <!--<constructor-arg ref="freemarkerARTemplateEngine"/>-->
+        <!--<constructor-arg ref="restUtil"/>-->
+    <!--</bean>-->
+
+    <bean id="parsePushService" class="com.secqme.util.notification.push.ParsePushService">
+        <constructor-arg ref="freemarkerARTemplateEngine"/>
+        <constructor-arg ref="restUtil"/>
+        <constructor-arg>
+            <value>${parse.push.url}</value>
+        </constructor-arg>
+        <constructor-arg>
+            <value>${parse.push.application.id}</value>
+        </constructor-arg>
+        <constructor-arg>
+            <value>${parse.push.rest.api.key}</value>
+        </constructor-arg>
+    </bean>
+
+    <bean id="marketingEmailService" class="com.secqme.util.marketing.NullMarketingEmailService">
+    </bean>
+
+    <!--<bean id="marketingEmailService" class="com.secqme.util.marketing.GetResponseMarketingEmailService">-->
+        <!--<constructor-arg ref="restUtil"/>-->
+        <!--<constructor-arg>-->
+            <!--<value>${get.response.url}</value>-->
+        <!--</constructor-arg>-->
+        <!--<constructor-arg>-->
+            <!--<value>${get.response.api.key}</value>-->
+        <!--</constructor-arg>-->
+        <!--<constructor-arg>-->
+            <!--<value>${get.response.campaign.general}</value>-->
+        <!--</constructor-arg>-->
+        <!--<constructor-arg>-->
+            <!--<value>${get.response.campaign.lite}</value>-->
+        <!--</constructor-arg>-->
+        <!--<constructor-arg>-->
+            <!--<value>${get.response.campaign.premium}</value>-->
+        <!--</constructor-arg>-->
+        <!--<constructor-arg>-->
+            <!--<value>${get.response.campaign.emergencyContact}</value>-->
+        <!--</constructor-arg>-->
+    <!--</bean>-->
+
+    <bean id="mandrillARTemplateEngine" class="com.secqme.util.ar.MandrillARTemplateEngine">
+        <constructor-arg ref="arMarketMessageTemplateDAO"/>
+        <constructor-arg ref="languageDAO"/>
+    </bean>
+
+    <bean id="freemarkerARTemplateEngine" class="com.secqme.util.ar.FreeMarkerARTemplateEngine">
+        <constructor-arg ref="arMarketMessageTemplateDAO"/>
+        <constructor-arg ref="languageDAO"/>
+    </bean>
+
+    <bean id="notificationEngine" class="com.secqme.util.notification.DefaultNotificationEngine">
+        <constructor-arg ref="smsManager"/>
+        <constructor-arg ref="snsManager"/>
+        <constructor-arg ref="sparkPostEmailService"/>
+        <constructor-arg ref="parsePushService"/>
+        <constructor-arg ref="marketingEmailService"/>
+    </bean>
+
+    <bean id="mySecurityHelper" class="com.secqme.util.security.DefaultSecurityHelper"/>
+
+    <bean id="localeManager" class="com.secqme.util.DefaultLocaleManager">
+        <constructor-arg ref="languageDAO"/>
+    </bean>
+
+    <bean id="scheduleManager" class="com.secqme.util.schedular.DefaultScheduleManager" init-method="initScheduleManager">
+        <constructor-arg>
+            <value>${subscription.info.trigger.schedule}</value>
+        </constructor-arg>
+        <constructor-arg>
+            <value>${emergency.contact.reminder.email.trigger}</value>
+        </constructor-arg>
+        <constructor-arg>
+            <value type="boolean">${scheduler.default.enabled}</value>
+        </constructor-arg>
+    </bean>
+
+    <bean id="promotionManager"
+          class="com.secqme.manager.promotion.DefaultPromotionManager" init-method="init">
+        <constructor-arg ref="promotionDAO"/>
+        <constructor-arg ref="pricingPackageDAO"/>
+        <constructor-arg ref="billingPkgDAO"/>
+        <constructor-arg ref="cacheUtil"/>
+    </bean>
+
+    <bean id="baseManager" abstract="true">
+        <property name="campaignsDAO" ref="campaignDAO"/>
+        <property name="contactDAO" ref="contactDAO"/>
+        <property name="crimeReportDAO" ref="crimeReportDAO"/>
+        <property name="emailLogDAO" ref="emailLogDAO"/>
+        <property name="eventLogDAO" ref="eventLogDAO"/>
+        <property name="referralLogDAO" ref="referralLogDAO"/>
+        <property name="referralProgramDAO" ref="referralProgramDAO"/>
+        <property name="referralProgramMarketingTextDAO" ref="referralProgramMarketingTextDAO"/>
+        <property name="referralReportDAO" ref="referralReportDAO"/>
+        <property name="savedEventsDAO" ref="savedEventsDAO"/>
+        <property name="secqMeEventDAO" ref="secqmeEventDAO"/>
+        <property name="serverParamDAO" ref="serverParamDAO"/>
+        <property name="shareEventDAO" ref="shareEventDAO"/>
+        <property name="smsLogDAO" ref="smsLogDAO"/>
+        <property name="trackingLogDAO" ref="trackingLogDAO"/>
+        <property name="userDAO" ref="userDAO"/>
+        <property name="userSNSConfigDAO" ref="userSNSConfigDAO"/>
+
+        <property name="localeManager" ref="localeManager"/>
+        <property name="mediaFileManager" ref="s3MediaFileManager"/>
+        <property name="promotionManager" ref="promotionManager"/>
+        <property name="scheduleManager" ref="scheduleManager"/>
+        <property name="smsManager" ref="smsManager"/>
+        <property name="snsManager" ref="snsManager"/>
+
+        <property name="cacheUtil" ref="cacheUtil"/>
+        <property name="emailAddressUtil" ref="emailAddressUtil"/>
+        <property name="fbUtil" ref="myFacebookUtil"/>
+        <property name="locationUtil" ref="locationUtil"/>
+        <property name="mobileNumberUtil" ref="mobileNumberUtil"/>
+        <property name="notificationEngine" ref="notificationEngine"/>
+        <property name="pronounceablePasswordGenerator" ref="pronounceablePasswordGenerator"/>
+        <property name="securityHelper" ref="mySecurityHelper"/>
+        <property name="textUtil" ref="textUtil"/>
+        <property name="urlShortenerService" ref="branchUrlShortenerService"/>
+        <property name="validator" ref="myValidator"/>
+    </bean>
+
+    <!-- A List of Billing Helpe -->
+    <bean id="safeZoneManager" class="com.secqme.manager.safezone.DefaultSafeZoneManager"
+          parent="baseManager"/>
+
+    <bean id="crimeManager" class="com.secqme.manager.crime.DefaultCrimeManager" parent="baseManager"/>
+
+    <bean id="myBillingManager" class="com.secqme.manager.billing.DefaultBillingManager"
+          parent="baseManager" init-method="init">
+        <constructor-arg ref="billingPkgDAO"/>
+        <constructor-arg ref="marketDAO"/>
+        <constructor-arg ref="billingCycleDAO"/>
+        <constructor-arg ref="billingLogDAO"/>
+    </bean>
+
+    <bean id="paymentHelper" class="com.secqme.util.payment.DefaultPaymentHelper">
+        <constructor-arg ref="pendingPaymentDAO"/>
+        <constructor-arg ref="userDAO"/>
+    </bean>
+
+    <bean id="referralManager" class="com.secqme.manager.referral.DefaultReferralManager" parent="baseManager"
+          init-method="initReferralProgram">
+        <constructor-arg>
+            <value>${referral.base.URL}</value>
+        </constructor-arg>
+        <constructor-arg ref="myBillingManager"/>
+    </bean>
+
+    <bean id="myPaymentManager" class="com.secqme.manager.payment.DefaultPaymentManager"
+          parent="baseManager" init-method="initAllPaymentGW">
+        <constructor-arg ref="paymentGWDAO"/>
+        <constructor-arg ref="paymentHistoryDAO"/>
+        <constructor-arg ref="pricingPackageDAO"/>
+        <constructor-arg ref="myBillingManager"/>
+        <constructor-arg ref="paymentHelper"/>
+        <constructor-arg ref="giftPaymentLogDAO"/>
+        <constructor-arg ref="paymentClickDAO"/>
+    </bean>
+
+    <bean id="myEventManager" class="com.secqme.manager.DefaultEventManager"
+          parent="baseManager">
+        <constructor-arg ref="myBillingManager"/>
+        <constructor-arg>
+            <value>${tracking.base.URL}</value>
+        </constructor-arg>
+        <constructor-arg>
+            <list>
+                <value>demo@watchovermeapp.com</value>
+            </list>
+        </constructor-arg>
+    </bean>
+
+    <bean id="myUserManager" class="com.secqme.manager.DefaultUserManager"
+          parent="baseManager">
+        <constructor-arg ref="myBillingManager"/>
+        <constructor-arg ref="quickEventManager"/>
+        <constructor-arg ref="referralManager"/>
+        <constructor-arg ref="myPaymentManager"/>
+        <constructor-arg ref="paymentHelper"/>
+    </bean>
+
+    <bean id="contactManager" class="com.secqme.manager.DefaultContactManager" parent="baseManager">
+        <constructor-arg ref="myUserManager"/>
+    </bean>
+
+    <bean id="myTrackingManager" class="com.secqme.manager.DefaultTrackingManager"
+          parent="baseManager">
+        <constructor-arg ref="myEventManager"/>
+        <constructor-arg ref="trackingLogDAO"/>
+        <constructor-arg ref="userTrackingLogDAO"/>
+        <constructor-arg>
+            <value>${media.url.prefix}</value>
+        </constructor-arg>
+    </bean>
+
+    <bean id="messageSource"
+          class="org.springframework.context.support.ReloadableResourceBundleMessageSource"
+          p:fallbackToSystemLocale="false"
+          p:fileEncodings="UTF-8"
+          p:defaultEncoding="UTF-8">
+        <property name="basenames">
+            <list>
+                <value>classpath:message</value>
+            </list>
+        </property>
+    </bean>
+
+    <!--
+    If you have configured in HA Environment to run on multiple notes
+Please ensure that  there is always one Node to process the expire Event,
+Else duplicate SMS +  Email may be send out..
+
+    -->
+    <!-- Setting of all the timer Tasks here -->
+    <!--
+    <bean id="processEventJob" class="com.secqme.tasks.ProcessEvent">
+        <constructor-arg ref="myEventManager"/>
+        <constructor-arg ref="mySecqMeEventDAO"/>
+    </bean>
+
+    <bean id="processEventTask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="processEventJob"/>
+        <property name="targetMethod" value="checkEvent"/>
+        <property name="concurrent" value="false"/>
+    </bean>
+
+    <bean id="sendConfirmTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+        <property name="jobDetail" ref="processEventTask"/>
+        <property name="startDelay" value="0"/>
+        <property name="repeatInterval" value="60000"/>
+    </bean>
+
+    <bean id="scheduleFactory" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+                <ref bean="sendConfirmTrigger"/>
+            </list>
+        </property>
+    </bean>
+<<<<<<< .mine
+      -->
+    <bean id="dbUtil" class="com.secqme.util.DefaultDatabaseUtil">
+        <constructor-arg ref="entityManagerFactory"/>
+    </bean>
+
+
+    <bean id="applePaymentUtil" class="com.secqme.util.payment.DefaultApplePaymentUtil">
+        <constructor-arg>
+            <value>${itune.inapp.rest.url}</value>
+        </constructor-arg>
+        <constructor-arg ref="paymentHistoryDAO"/>
+        <constructor-arg ref="iTunePaymentLogDAO"/>
+        <constructor-arg ref="restUtil"/>
+        <constructor-arg ref="pricingPackageDAO"/>
+        <constructor-arg ref="userDAO"/>
+        <constructor-arg ref="myBillingManager"/>
+        <constructor-arg ref="myPaymentManager"/>
+        <constructor-arg>
+            <value>${itune.inapp.rest.test.url}</value>
+        </constructor-arg>
+        <constructor-arg ref="notificationEngine"/>
+    </bean>
+
+
+    <bean id="googlePaymentUtil" class="com.secqme.util.payment.DefaultGooglePaymentUtil">
+        <constructor-arg ref="paymentHistoryDAO"/>
+        <constructor-arg ref="restUtil"/>
+        <constructor-arg ref="pricingPackageDAO"/>
+        <constructor-arg ref="userDAO"/>
+        <constructor-arg ref="myBillingManager"/>
+        <constructor-arg ref="myPaymentManager"/>
+        <constructor-arg ref="notificationEngine"/>
+        <constructor-arg ref="googlePaymentLogDAO"/>
+        <constructor-arg>
+            <value>${google.in.app.billing.v3.refresh.token.url}</value>
+        </constructor-arg>
+        <constructor-arg>
+            <value>${google.in.app.billing.v3.subscription.url}</value>
+        </constructor-arg>
+        <constructor-arg>
+            <value>${google.in.app.billing.v3.client.id}</value>
+        </constructor-arg>
+        <constructor-arg>
+            <value>${google.in.app.billing.v3.secret}</value>
+        </constructor-arg>
+        <constructor-arg>
+            <value>${google.in.app.billing.v3.refresh.token}</value>
+        </constructor-arg>
+    </bean>
+
+    <bean id="promoCodeManager"
+          class="com.secqme.manager.promocode.DefaultPromoCodeManager">
+        <constructor-arg ref="promoCodeDAO"/>
+        <constructor-arg ref="promoCodeLogDAO"/>
+        <constructor-arg ref="myBillingManager"/>
+    </bean>
+
+    <bean id="userSubscriptionInfoManager" class="com.secqme.manager.payment.DefaultUserSubscriptionInfoManager"
+          parent="baseManager">
+        <constructor-arg ref="subscriptionInfoDAO"/>
+        <constructor-arg ref="subscriptionInfoLogDAO"/>
+        <constructor-arg ref="googlePaymentLogDAO"/>
+        <constructor-arg ref="notificationEngine"/>
+        <constructor-arg ref="googlePaymentUtil"/>
+        <constructor-arg ref="myBillingManager"/>
+    </bean>
+    
+    <bean id="systemAdminUtil" class="com.secqme.util.system.DefaultSysAdminUtil">
+        <constructor-arg>
+            <value>${system.admin.user.name}</value>
+        </constructor-arg>
+        <constructor-arg>
+            <value>${system.admin.password}</value>
+        </constructor-arg>
+        <constructor-arg>
+            <value>${app.common.id}</value>
+        </constructor-arg>
+        <constructor-arg>
+            <value>${app.common.secret}</value>
+        </constructor-arg>
+        <constructor-arg ref="cacheUtil"/>
+        <constructor-arg ref="myUserManager"/>
+        <constructor-arg ref="parsePushService"/>
+        <constructor-arg ref="dbUtil"/>
+        <constructor-arg ref="freemarkerARTemplateEngine"/>
+        <constructor-arg>
+            <value>${wom.android.app.url}</value>
+        </constructor-arg>
+        <constructor-arg>
+            <value>${wom.ios.app.url}</value>
+        </constructor-arg>
+        <constructor-arg>
+            <value>${wom.website.url}</value>
+        </constructor-arg>
+    </bean>
+</beans>

@@ -1,0 +1,212 @@
+<!DOCTYPE HTML>
+<HTML xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+>
+<f:view contentType="text/html">
+<h:head>
+	<f:metadata>
+        <f:event type="preRenderView"
+                 listener="#{giftBean.initGiftBean}"/>
+    </f:metadata>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="description" content="Whether you're going for a run or walking home alone, just let Watch Over Me know and it'll watch over you via GPS. We'll notify your emergency contacts in case you need help"/>
+    <meta name="keywords"
+          content="best personal safety app, best women safety app, best safety app,
+          tracking app, rescue app, first aid app, iphone first aid app, android first aid app, automatic emergency alert,
+          sos emergency alert, women rescue, best campus app, panic button, personal security, personal guard,
+          virtual security guard, emergency contact, best free android app, best free ios app,
+          best app for iphone, best app for android, best safety app for iphone, best safety app for android,
+          personal protection app, women protection app, best app for women, best app for female, panic button app,
+          best panic button app, best panic button app for android, best panic button app for iphone,
+          best safety tool, best iphone safety tool, best android safety tool, best women safety app,
+          best women safety app for iphone, best women safety app for android"/>
+
+    <!-- TODO -->
+    <meta property="og:title" content="Watch Over Me - award-winning app that turns your smartphone into a powerful safety device"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:url" content="http://watchovermeapp.com"/>
+    <meta property="og:image" content="http://watchovermeapp.com/img/fb-post-img.jpg"/>
+    <title>Watch Over Me</title>
+    <link rel="shortcut icon" href="img/logo-blue.png"/>
+    <link rel="stylesheet" href="newcss/bootstrap.css"/>
+    <link rel="stylesheet" href="newcss/main.css"/>
+    <!-- Custom Fonts -->
+    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+
+    <link rel="stylesheet" href="newcss/jquery.fancybox.css" type="text/css" media="screen" />
+
+
+    <!-- Facebook Conversion Code for WOM Website Visitor -->
+    <script>
+        var fb_param = {};
+        fb_param.pixel_id = '6015221439907';
+        fb_param.value = '0.00';
+        fb_param.currency = 'USD';
+        (function () {
+            var fpw = document.createElement('script');
+            fpw.async = true;
+            fpw.src = '//connect.facebook.net/en_US/fp.js';
+            var ref = document.getElementsByTagName('script')[0];
+            ref.parentNode.insertBefore(fpw, ref);
+        })();
+    </script>
+    <noscript><img height="1" width="1" alt="" style="display:none"
+                   src="https://www.facebook.com/offsite_event.php?id=6015221439907&amp;value=0&amp;currency=USD"/>
+    </noscript>
+    <script>(function (i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        i[r] = i[r] || function () {
+            (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date();
+        a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0];
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+    ga('create', 'UA-49937325-1', 'watchovermeapp.com');
+    ga('send', 'pageview');
+    </script>
+</h:head>
+
+<h:body>
+    <h:form>
+        <div class="order-form">
+            <div class="container"><h1>Watch Over Me Order Form<span class="glyphicon glyphicon-gift pull-right"></span></h1>
+            </div>
+        </div>
+        <div class="content">
+			<div class="container">
+				<div class="row">
+					<div class="col-sm-8">
+						<p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+						<h3>Personalize your Gift</h3>
+						<div class="row">
+							<div class="col-sm-6">
+								<div class="form-group"><label class="control-label">Who is this for</label>
+							    <h:inputText id="recipientName" value="#{giftBean.recipientName}" pt:placeholder="Dana"
+							        	class="form-control input-lg" requiredMessage="Required" required="true" label="Keyword" size="20"/>
+							    <h:message for="recipientName" style="color:red" />
+									
+								</div>
+								<div class="form-group"><label class="control-label">Her country code</label>
+									<h:selectOneMenu value="#{giftBean.recipientMobileCountry}" class="form-control input-lg">
+							   			<f:selectItems value="#{giftBean.countryMap}" />
+							   		</h:selectOneMenu>
+								</div>
+								<div class="form-group"><label class="control-label">Her mobile number</label>
+									<h:inputText value="#{giftBean.recipientMobileNumber}" class="form-control input-lg" pt:placeholder="4151234567"
+		                                requiredMessage="Required"  id="recipientMobileNumber" required="true" size="20" validatorMessage="Invalid number format">
+		                                <f:validateRegex pattern="[0-9]*" />
+		                            </h:inputText>
+		                                <h:message for="recipientMobileNumber" style="color:red" />
+								</div>
+								<div class="form-group"><label class="control-label">Her Email</label>
+									<h:inputText value="#{giftBean.recipientEmail}" class="form-control input-lg" pt:placeholder="dana@example.com"
+		                                requiredMessage="Required" id="recipientEmail" required="true" size="30" 
+		                                validatorMessage="Invalid Email format">
+		                                <f:validateRegex
+										pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+		                            </h:inputText>
+		                                <h:message for="email" style="color:red" />
+								</div>
+							</div>
+							<div class="col-sm-6">
+								<div class="form-group">
+									<label for="name" class="control-label">Who is this from</label>
+									<h:inputText value="#{giftBean.name}" class="form-control input-lg" pt:placeholder="James"
+	                                    requiredMessage="Required" id="userName" required="true" size="20"/>
+	                                    <h:message for="userName" style="color:red" />
+								</div>
+								<div class="form-group"><label class="control-label">Your country code</label>
+									<h:selectOneMenu value="#{giftBean.mobileCountry}" class="form-control input-lg">
+							   			<f:selectItems value="#{giftBean.countryMap}" />
+							   		</h:selectOneMenu>
+								</div>
+								<div class="form-group"><label class="control-label">Your mobile number</label>
+									<h:inputText value="#{giftBean.mobileNumber}" class="form-control input-lg" pt:placeholder="4151234567"
+		                                requiredMessage="Required" id="mobileNumber" required="true" size="20" validatorMessage="Invalid number format">
+		                                <f:validateRegex pattern="[0-9]*" />
+		                            </h:inputText>
+		                                <h:message for="mobileNumber" style="color:red" />
+								</div>
+								<div class="form-group"><label class="control-label">Your Email</label>
+									<h:inputText value="#{giftBean.email}" class="form-control input-lg" pt:placeholder="james@example.com"
+		                                requiredMessage="Required" id="email" required="true" size="30" 
+		                                validatorMessage="Invalid Email format">
+		                                <f:validateRegex
+										pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+		                            </h:inputText>
+		                                <h:message for="email" style="color:red" />
+								</div>
+							</div>
+							<div class="col-sm-12">
+								<div class="form-group"><label class="control-label">Would you like to include a personalised message (Optional)</label>
+									<h:inputTextarea row="4" value="#{giftBean.message}" class="form-control input-lg"
+		                                 							id="message" required="false" size="20"/>
+								</div>
+							</div>
+						</div>
+						<label class="control-label">Renew my gift subscription automatically every year</label>&#160;&#160;<h:selectBooleanCheckbox value="#{giftBean.subscribe}" />
+						<p class="text-right">
+	                        <h:commandButton value="Pay with PayPal" action="#{giftBean.purchaseValidation}" class="btn btn-primary btn-lg"/>
+						</p>
+							
+					</div>
+				</div>
+			</div>
+		</div>
+        <footer>
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-2">
+                        <h5>Info</h5>
+                        <ul class="list-unstyled links">
+                            <li><a href="http://watchovermeapp.com">Home</a></li>
+                            <li><a href="http://watchovermeapp.com/about">About Us</a></li>
+                            <li><a href="http://watchovermeapp.com/total-safety">Unlock Total Safety</a></li>
+                            <li><a href="http://watchovermeapp.com/gift">Gifting</a></li>
+                            <li><a href="http://watchovermeapp.com/reviews">Reviews</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-xs-12 col-sm-2">
+                        <h5>Connect with us</h5>
+                        <ul class="list-inline social-buttons">
+                            <li><a href="http://twitter.com/watchovermeapp"><i class="fa fa-twitter fa-2x"></i></a>
+                            </li>
+                            <li><a href="http://www.facebook.com/watchovermeapp"><i class="fa fa-facebook fa-2x"></i></a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-xs-12 col-sm-3 support">
+                        <h5>Or email us directly at</h5>
+                        <a href="mailto:support@watchovermeapp.com" title="Email">support@watchovermeapp.com</a>
+                    </div>
+                </div>
+                <p class="copyright">
+                    <strong>Watch Over Me</strong> Copyright © 2015 SECQME. All Rights Reserved. | <a href="http://watchovermeapp.com/terms-condition/">Terms and Condition</a> | <a href="http://watchovermeapp.com/privacy-policy/">Privacy Policy</a>
+                    <a href="https://mixpanel.com/f/partner" class="pull-right"><img src="//cdn.mxpnl.com/site_media/images/partner/badge_light.png" alt="Mobile Analytics"/></a>
+                </p>
+            </div>
+        </footer>
+        <script src="js/jquery-1.11.0.min.js"></script>
+        <script src="js/bootstrap.js"></script>
+        <script type="text/javascript" src="js/jquery.fancybox.pack.js"></script>
+        <script src="js/main.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $(".fancybox").fancybox();
+            });
+        </script>
+    </h:form>
+</h:body>
+</f:view>
+</HTML>

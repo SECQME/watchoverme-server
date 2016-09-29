@@ -1,0 +1,30 @@
+<ui:composition
+        template="/WEB-INF/templates/v1/simple.xhtml"
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+        xmlns:ui="http://java.sun.com/jsf/facelets">
+    <ui:define name="metadata">
+        <f:metadata>
+            <f:event type="preRenderView" listener="#{verifyEmailBean.verifyEmail}"/>
+        </f:metadata>
+    </ui:define>
+    <ui:define name="content">
+        <h:form>
+            <div class="container error-page">
+                <div class="row">
+                    <div class="col-sm-6 col-sm-offset-3 error-text">
+                        <div class="error-header">
+                            <h:graphicImage library="v1" name="images/logo-blue-long_#{localeManager.getSupportedLanguage(request.locale).getCode()}.png" />
+                        </div>
+                        <h2 class="pull-left"><h:outputText value="#{msgs['emailverify.title']}" /></h2>
+                        <p><h:outputText value="#{msgs['emailverify.body']}" /></p>
+                    </div>
+                </div>
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>

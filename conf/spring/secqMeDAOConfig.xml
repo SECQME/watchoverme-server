@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalEntityManagerFactoryBean">
+        <property name="persistenceUnitName" value="secqme"/>
+    </bean>
+
+    <bean id="baseJPADAO" abstract="true">
+        <property name="emf" ref="entityManagerFactory"/>
+    </bean>
+
+    <bean id="arMarketMessageTemplateDAO" class="com.secqme.domain.dao.jpa.ARMarketMessageTemplateJPADAO" parent="baseJPADAO"/>
+    <bean id="billingCycleDAO" class="com.secqme.domain.dao.jpa.BillingCycleJPADAO" parent="baseJPADAO"/>
+    <bean id="billingLogDAO" class="com.secqme.domain.dao.jpa.BillingLogJPADAO" parent="baseJPADAO"/>
+    <bean id="billingPkgDAO" class="com.secqme.domain.dao.jpa.BillingPkgJPADAO" parent="baseJPADAO"/>
+    <bean id="campaignDAO" class="com.secqme.domain.dao.jpa.CampaignsJPADAO" parent="baseJPADAO"/>
+    <bean id="contactDAO" class="com.secqme.domain.dao.jpa.ContactJPADAO" parent="baseJPADAO"/>
+    <bean id="crimeReportDAO" class="com.secqme.domain.dao.jpa.CrimeReportJPADAO" parent="baseJPADAO"/>
+    <bean id="emailLogDAO" class="com.secqme.domain.dao.jpa.EmailLogJPADAO" parent="baseJPADAO"/>
+    <bean id="eventLogDAO" class="com.secqme.domain.dao.jpa.EventLogJPADAO" parent="baseJPADAO"/>
+    <bean id="giftPaymentLogDAO" class="com.secqme.domain.dao.jpa.GiftPaymentLogJPADAO" parent="baseJPADAO"/>
+    <bean id="googleGeoCodeCacheDAO" class="com.secqme.domain.dao.jpa.GoogleGeoCodeCacheJAPDAO" parent="baseJPADAO"/>
+    <bean id="googlePaymentLogDAO" class="com.secqme.domain.dao.jpa.GooglePaymentLogJPADAO" parent="baseJPADAO"/>
+    <bean id="googlePlaceCacheDAO" class="com.secqme.domain.dao.jpa.GooglePlaceCahceJPADAO" parent="baseJPADAO"/>
+    <bean id="iTunePaymentLogDAO" class="com.secqme.domain.dao.jpa.ItunePaymentLogJPADAO" parent="baseJPADAO"/>
+    <bean id="languageDAO" class="com.secqme.domain.dao.jpa.LanguageJPADAO" parent="baseJPADAO"/>
+    <bean id="marketDAO" class="com.secqme.domain.dao.jpa.MarketJPADAO" parent="baseJPADAO"/>
+    <bean id="marketingTextConfigDAO" class="com.secqme.domain.dao.jpa.MarketingTextConfigJPADAO" parent="baseJPADAO"/>
+    <bean id="paymentClickDAO" class="com.secqme.domain.dao.jpa.PaymentClickJPADAO" parent="baseJPADAO"/>
+    <bean id="paymentGWDAO" class="com.secqme.domain.dao.jpa.PaymentGWJPADAO" parent="baseJPADAO"/>
+    <bean id="paymentHistoryDAO" class="com.secqme.domain.dao.jpa.PaymentHistoryJPADAO" parent="baseJPADAO"/>
+    <bean id="paypalIPNLogDAO" class="com.secqme.domain.dao.jpa.PayPalIPNJPADAO" parent="baseJPADAO"/>
+    <bean id="pendingPaymentDAO" class="com.secqme.domain.dao.jpa.PendingPaymentJPADAO" parent="baseJPADAO"/>
+    <bean id="pricingPackageDAO" class="com.secqme.domain.dao.jpa.PricingPkgJPADAO" parent="baseJPADAO"/>
+    <bean id="promoCodeDAO" class="com.secqme.domain.dao.jpa.PromoCodeJPADAO" parent="baseJPADAO"/>
+    <bean id="promoCodeLogDAO" class="com.secqme.domain.dao.jpa.PromoCodeLogJPADAO" parent="baseJPADAO"/>
+    <bean id="promotionDAO" class="com.secqme.domain.dao.jpa.PromotionJPADAO" parent="baseJPADAO"/>
+    <bean id="pushMessageLogDAO" class="com.secqme.domain.dao.jpa.PushMessageLogJPADAO" parent="baseJPADAO"/>
+    <bean id="quickEventTemplateDAO" class="com.secqme.domain.dao.jpa.QuickEventTemplateJPADAO" parent="baseJPADAO"/>
+    <bean id="referralLogDAO" class="com.secqme.domain.dao.jpa.ReferralLogJPADAO" parent="baseJPADAO"/>
+    <bean id="referralProgramDAO" class="com.secqme.domain.dao.jpa.ReferralProgramJPADAO" parent="baseJPADAO"/>
+    <bean id="referralProgramMarketingTextDAO" class="com.secqme.domain.dao.jpa.ReferralProgramMarketingTextJPADAO" parent="baseJPADAO"/>
+    <bean id="referralReportDAO" class="com.secqme.domain.dao.jpa.ReferralReportJPADAO" parent="baseJPADAO"/>
+    <bean id="savedEventsDAO" class="com.secqme.domain.dao.jpa.SavedEventsJPADAO" parent="baseJPADAO"/>
+    <bean id="secqmeEventDAO" class="com.secqme.domain.dao.jpa.SecqMeEventJPADAO" parent="baseJPADAO"/>
+    <bean id="serverParamDAO" class="com.secqme.domain.dao.jpa.ServerParamJPADAO" parent="baseJPADAO"/>
+    <bean id="shareEventDAO" class="com.secqme.domain.dao.jpa.ShareEventJPADAO" parent="baseJPADAO"/>
+    <bean id="smsGWDAO" class="com.secqme.domain.dao.jpa.SMSGWJPADAO" parent="baseJPADAO"/>
+    <bean id="smsLogDAO" class="com.secqme.domain.dao.jpa.SMSLogJPADAO" parent="baseJPADAO"/>
+    <bean id="snsLogDAO" class="com.secqme.domain.dao.jpa.SnsLogJPADAO" parent="baseJPADAO"/>
+    <bean id="socialNetworkDAO" class="com.secqme.domain.dao.jpa.SocialNetworkJPADAO" parent="baseJPADAO"/>
+    <bean id="subscriptionInfoDAO" class="com.secqme.domain.dao.jpa.SubscriptionInfoJPADAO" parent="baseJPADAO"/>
+    <bean id="subscriptionInfoLogDAO" class="com.secqme.domain.dao.jpa.SubscriptionInfoLogJPADAO" parent="baseJPADAO"/>
+    <bean id="timeZoneDAO" class="com.secqme.domain.dao.jpa.TimeZoneJPADAO" parent="baseJPADAO"/>
+    <bean id="trackingLogDAO" class="com.secqme.domain.dao.jpa.TrackingLogJPADAO" parent="baseJPADAO"/>
+    <bean id="userDAO" class="com.secqme.domain.dao.jpa.UserJPADAO" parent="baseJPADAO"/>
+    <bean id="userSNSConfigDAO" class="com.secqme.domain.dao.jpa.UserSNSConfigJPADAO" parent="baseJPADAO"/>
+    <bean id="userTrackingLogDAO" class="com.secqme.domain.dao.jpa.UserTrackingLogJPADAO" parent="baseJPADAO"/>
+
+</beans>

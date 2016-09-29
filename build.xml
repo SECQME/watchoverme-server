@@ -1,0 +1,230 @@
+<project name="secqme" default="compile" basedir="." xmlns:ivy="antlib:fr.jayasoft.ivy.ant">
+    <description>
+        SecQ.Me Watch Over Me
+    </description>
+
+    <property environment="env"/>
+
+    <condition property="build.env" value="${build.env}" else="local">
+        <isset property="build.env" />
+    </condition>
+    <property file="${basedir}/${build.env}.properties" />
+
+    <property name="ivy.settings.dir" value="./ivy_settings" />
+    <property name="src.dir" location="src"/>
+    <property name="build.dir" location="build"/>
+    <property name="dist.dir"  location="dist"/>
+    <property name="web.dir" location="web"/>
+    <property name="webinf.dir" location="${web.dir}/WEB-INF"/>
+    <property name="lib.dir" location="lib"/>
+    <property name="conf.dir" location="conf"/>
+    <property name="build.lib.dir" location="build_lib"/>
+    <property name="test.src.dir" location="test/src"/>
+    <property name="test.build.dir" location="test/build"/>
+    <property name="test.lib.dir" location="test/lib"/>
+    <property name="non.ivy.lib.dir" location="non_ivy_lib"/>
+    <property name="test.conf.dir" location="test/conf"/>
+    <property name="test.output.dir" location="test/output"/>
+    <property name="test.coverage.dir" location="test/coverage"/>
+    <property name="coveragereport.dir" location="${test.coverage.dir}/report"/>
+    <property name="test.debug.class.dir" location="test/debug-classes"/>
+    <property name="test.coverage.instrument.class.dir" location="${test.coverage.dir}/instrutedClasses"/>
+    <property name="aws.elasticbeanstalk.dir" location="elasticbeanstalk"/>
+
+    <ivy:settings file="${ivy.settings.dir}/ivysettings.xml" />
+
+
+    <!-- paths used for compilation and run  -->
+    <path id="lib.path.id">
+        <fileset dir="${lib.dir}" />
+        <fileset dir="${non.ivy.lib.dir}" />
+        <fileset dir="${build.lib.dir}" />
+    </path>
+
+    <path id="testing.library.id">
+        <fileset dir="${test.lib.dir}">
+            <include name="*.jar"/>
+        </fileset>
+        <fileset dir="${dist.dir}">
+            <include name="*.jar"/>
+        </fileset>
+    </path>
+
+    <path id="testing.path">
+        <path refid="lib.path.id"/>
+        <path refid="testing.library.id"/>
+    </path>
+
+
+    <path id="all.lib.path.id">
+        <path refid="lib.path.id" />
+        <path location="build_lib" />
+    </path>
+
+    <path id="build.ext.lib">
+        <pathelement location="${build.lib.dir}"/>
+        <fileset dir="${build.lib.dir}">
+            <include name="*.jar"/>
+        </fileset>
+    </path>
+
+    <taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask" classpathref="build.ext.lib"/>
+    <taskdef name="findbugs" classname="edu.umd.cs.findbugs.anttask.FindBugsTask" classpathref="build.ext.lib"/>
+
+    <path id="cobertura.classpath">
+        <path refid="lib.path.id" />
+    </path>
+
+    <taskdef classpathref="cobertura.classpath" resource="tasks.properties" />
+
+    <target name="init">
+        <!-- Create the time stamp -->
+        <tstamp/>
+        <!-- Create the build directory structure used by compile -->
+        <mkdir dir="${build.dir}"/>
+        <mkdir dir="${dist.dir}"/>
+        <mkdir dir="${test.debug.class.dir}"/>
+        <mkdir dir="${test.build.dir}"/>
+        <mkdir dir="${test.output.dir}"/>
+        <mkdir dir="${test.coverage.dir}"/>
+    </target>
+
+    <target name="resolve" description="Get all dependent libraries with Apache Ivy">
+        <ivy:retrieve/>
+    </target>
+
+    <target name="compile" depends="init, resolve"
+            description="compile the source " >
+            <javac srcdir="${src.dir}" destdir="${build.dir}" classpathref="lib.path.id" debug="true" debuglevel="lines,vars,source" />
+        <copy todir="${build.dir}">
+            <fileset dir="${conf.dir}">
+                <include name="**/*.xml"/>
+                <include name="**/*.properties"/>
+            </fileset>
+            <filterchain>
+                <filterreader classname="org.apache.tools.ant.filters.ReplaceTokens">
+                    <param type="propertiesfile" value="${basedir}/${build.env}.properties"/>
+                </filterreader>
+            </filterchain>
+        </copy>
+
+        <echo message="native2Ascii message properties files"/>
+        <native2ascii encoding="utf8" src="${conf.dir}/lang" dest="${build.dir}" includes="**/*.properties"/>
+    </target>
+
+    <target name="dist" depends="compile">
+        <jar file="${dist.dir}/secqme.jar">
+            <fileset dir="${build.dir}"/>
+        </jar>
+    </target>
+
+    <target name="weaving"
+            description="perform weaving">
+        <java classname="org.eclipse.persistence.tools.weaving.jpa.StaticWeave"
+              classpathref="all.lib.path.id" fork="true">
+            <arg line="-loglevel INFO ${build.dir} ${build.dir}"/>
+        </java>
+    </target>
+
+    <target name="war" depends="dist, weaving">
+        <war destfile="${dist.dir}/${war.name}"  webxml="${webinf.dir}/web.xml">
+            <fileset dir="${web.dir}">
+                <exclude name="${webinf.dir}/web.xml"/>
+            </fileset>
+            <lib dir="${lib.dir}">
+                <include name="**/*.jar"/>
+                <exclude name="**/javax.websocket-*.jar"/>
+                <exclude name="**/javaee-api-*.jar"/>
+                <exclude name="**/javax.servlet*.jar"/>
+                <exclude name="**/servlet-api*.jar"/>
+            </lib>
+            <lib dir="${dist.dir}">
+                <include name="**/*.jar"/>
+            </lib>
+            <lib dir="${non.ivy.lib.dir}">
+                <include name="**/*.jar"/>
+                <exclude name="**/javax.servlet*.jar"/>
+            </lib>
+            <classes dir="${build.dir}">
+                <include name="**/**"/>
+            </classes>
+        </war>
+    </target>
+
+    <target name="docker-prepare" depends="war" description="Prepare deployment ${war.name} to AWS Elastic Beanstalk">
+        <copy file="${dist.dir}/${war.name}" todir="${aws.elasticbeanstalk.dir}/webapps"/>
+    </target>
+
+    <target name="rollbar-deploy" if="${log4j.appender.rollbar.enabled}" description="Submit deployment info to Rollbar">
+        <exec executable="git" outputproperty="git.revision">
+            <arg line="log -n 1 --pretty=format:'%H'" />
+        </exec>
+        <echo message="${git.revision}"></echo>
+        <exec executable="curl">
+            <arg line="-s https://api.rollbar.com/api/1/deploy/ -F access_token=${log4j.appender.rollbar.apiKey} -F environment=${build.env} -F revision=${git.revision} -F local_username=${user.name}"/>
+        </exec>
+    </target>
+
+    <target name="aws-vpc-nat-start" description="Start EC2 NAT instance to make EC2 private instances have internet connection">
+        <echo message="Starting an EC2 NAT Instance..."/>
+        <exec executable="aws">
+            <arg value="ec2"/>
+            <arg value="start-instances"/>
+            <arg value="--instance-ids"/>
+            <arg value="${aws.vpc.nat.instanceid}"/>
+        </exec>
+        <echo message="Please don't forget to STOP this EC2 instance after not being used." level="warning"/>
+    </target>
+
+
+    <target name="aws-vpc-nat-stop" description="Stop EC2 NAT instance">
+        <echo message="Stopping an EC2 NAT Instance..."/>
+        <exec executable="aws">
+            <arg value="ec2"/>
+            <arg value="stop-instances"/>
+            <arg value="--instance-ids"/>
+            <arg value="${aws.vpc.nat.instanceid}"/>
+        </exec>
+    </target>
+
+    <target name="aws-eb-deploy" depends="docker-prepare,aws-vpc-nat-start" description="Deploy ${war.name} to AWS Elastic Beanstalk">
+        <exec executable="eb" dir="${aws.elasticbeanstalk.dir}">
+            <arg value="deploy"/>
+            <arg value="${aws.elasticbeanstalk.env}"/>
+            <arg value="-l"/>
+            <arg value="${build.env}_${DSTAMP}_${TSTAMP}"/>
+        </exec>
+        <exec executable="eb" dir="${aws.elasticbeanstalk.dir}">
+            <arg value="open"/>
+        </exec>
+    </target>
+
+    <target name="clean" description="clean up" >
+        <delete dir="${build.dir}"/>
+        <delete dir="${dist.dir}"/>
+        <delete dir="${test.debug.class.dir}"/>
+        <delete dir="${test.build.dir}"/>
+        <delete dir="${test.output.dir}"/>
+        <delete dir="${test.coverage.dir}"/>
+        <delete dir="${aws.elasticbeanstalk.dir}/webapps"/>
+    </target>
+
+    <target name="pmd">
+        <pmd shortFilenames="true">
+            <ruleset>basic</ruleset>
+            <ruleset>braces</ruleset>
+            <ruleset>coupling</ruleset>
+            <ruleset>design</ruleset>
+            <ruleset>strings</ruleset>
+            <ruleset>unusedcode</ruleset>
+            <formatter type="xml" toFile="pmd_report.xml" linkPrefix="http://pmd.sourceforge.net/xref/"/>
+            <fileset dir="${src.dir}"/>
+        </pmd>
+
+    </target>
+
+    <target name="pmd_report" depends="pmd">
+        <xslt in="pmd_report.xml" style="${build.lib.dir}/wz-pmd-report.xslt" out="report_pmd.html" />
+    </target>
+
+</project>

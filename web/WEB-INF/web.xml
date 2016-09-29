@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>/WEB-INF/classes/spring/secqMeConfig.xml</param-value>
+    </context-param>
+
+    <context-param>
+        <param-name>primefaces.THEME</param-name>
+        <param-value>none</param-value>
+    </context-param>
+
+    <context-param>
+        <param-name>javax.faces.STATE_SAVING_METHOD</param-name>
+        <param-value>server</param-value>
+    </context-param>
+    <listener>
+        <listener-class>
+            org.springframework.web.context.ContextLoaderListener
+        </listener-class>
+    </listener>
+    
+      <listener>
+          <listener-class>net.sf.ehcache.constructs.web.ShutdownListener</listener-class>
+     </listener>
+     
+    <context-param>
+        <param-name>primefaces.PUBLIC_CAPTCHA_KEY</param-name>
+        <param-value>6Lea0rwSAAAAACWtvGsIe5Kj07F2gBaOQb6WTMwV</param-value>
+    </context-param>
+    <context-param>
+        <param-name>primefaces.PRIVATE_CAPTCHA_KEY</param-name>
+        <param-value>6Lea0rwSAAAAADvUSneYqYjahvFHL0Unm69PqqPJ</param-value>
+    </context-param>
+    <listener>
+        <listener-class>com.secqme.util.CoreContextListener</listener-class>
+    </listener>
+    <listener>
+        <listener-class>
+			org.springframework.web.context.request.RequestContextListener
+        </listener-class>
+    </listener>
+
+    <filter>
+        <filter-name>CharacterEncodingFilter</filter-name>
+        <filter-class>
+			org.springframework.web.filter.CharacterEncodingFilter
+        </filter-class>
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+        <init-param>
+            <param-name>forceEncoding</param-name>
+            <param-value>true</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>CharacterEncodingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>RollbarFilter</filter-name>
+        <filter-class>com.secqme.filter.RollbarFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>RollbarFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>AuthorizationFilter</filter-name>
+        <filter-class>com.secqme.filter.AuthorizationFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>AuthorizationFilter</filter-name>
+        <url-pattern>/rs/v2.1/*</url-pattern>
+    </filter-mapping>
+
+    <servlet>
+        <servlet-name>Faces Servlet</servlet-name>
+        <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet>
+        <servlet-name>fb</servlet-name>
+        <servlet-class>com.secqme.sns.FBServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>TwitterServlet</servlet-name>
+        <servlet-class>com.secqme.sns.TwitterServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PaymentServlet</servlet-name>
+        <servlet-class>com.secqme.util.payment.PaymentServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AppLinkServlet</servlet-name>
+        <servlet-class>com.secqme.util.applink.AppLinkServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Faces Servlet</servlet-name>
+        <url-pattern>*.jsf</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>Jersey Web Application</servlet-name>
+        <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
+        <init-param>
+            <param-name>javax.ws.rs.Application</param-name>
+            <param-value>com.secqme.WebApplication</param-value>
+        </init-param>
+        <init-param>
+            <param-name>jersey.config.server.provider.packages</param-name>
+            <param-value>com.secqme.rs</param-value>
+        </init-param>
+        <load-on-startup>2</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Jersey Web Application</servlet-name>
+        <url-pattern>/rs/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>fb</servlet-name>
+        <url-pattern>/fb/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>TwitterServlet</servlet-name>
+        <url-pattern>/tw/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PaymentServlet</servlet-name>
+        <url-pattern>/payment/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AppLinkServlet</servlet-name>
+        <url-pattern>/applink/*</url-pattern>
+    </servlet-mapping>
+    <session-config>
+        <session-timeout>
+            30
+        </session-timeout>
+    </session-config>
+    <mime-mapping>
+        <extension>ico</extension>
+        <mime-type>image/x-icon</mime-type>
+    </mime-mapping>
+
+    <error-page>
+        <exception-type>java.lang.Throwable</exception-type >
+        <location>/wom/error.jsf</location>
+    </error-page>
+</web-app>

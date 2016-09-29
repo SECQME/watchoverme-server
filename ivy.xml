@@ -1,0 +1,77 @@
+<!--
+   Licensed to the Apache Software Foundation (ASF) under one
+   or more contributor license agreements.  See the NOTICE file
+   distributed with this work for additional information
+   regarding copyright ownership.  The ASF licenses this file
+   to you under the Apache License, Version 2.0 (the
+   "License"); you may not use this file except in compliance
+   with the License.  You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing,
+   software distributed under the License is distributed on an
+   "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+   KIND, either express or implied.  See the License for the
+   specific language governing permissions and limitations
+   under the License.    
+-->
+<ivy-module version="2.0">
+    <info organisation="me.secqme" module="secqme"/>
+    <dependencies>
+        <dependency org="asm" name="asm-all" rev="3.1" transitive="false" conf="*->*,!sources,!javadoc" />
+        <dependency org="c3p0" name="c3p0" rev="0.9.1.2" transitive="false" conf="*->*,!sources,!javadoc"/>
+        <dependency org="com.amazonaws" name="aws-java-sdk-s3" rev="1.10.1" conf="*->*,!sources,!javadoc"/>
+        <dependency org="com.restfb" name="restfb" rev="1.14.1"  conf="*->*,!sources,!javadoc" />
+        <dependency org="com.sun.el" name="el-ri" rev="1.0" transitive="false" conf="*->*,!sources,!javadoc" />
+        <dependency org="org.glassfish.jersey.containers" name="jersey-container-servlet" rev="2.22" conf="*->*,!sources,!javadoc" />
+        <dependency org="org.glassfish.hk2" name="hk2-locator" rev="2.4.0-b31" conf="*->*,!sources,!javadoc" />
+        <dependency org="org.glassfish.jersey.media" name="jersey-media-multipart" rev="2.22" conf="*->*,!sources,!javadoc"/>
+        <dependency org="org.glassfish.jersey.media" name="jersey-media-json-jettison" rev="2.22" conf="*->*,!sources,!javadoc"/>
+        <dependency org="com.sparkpost" name="sparkpost-lib" rev="0.13" />
+        <dependency org="com.twilio.sdk" name="twilio-java-sdk" rev="3.4.1" transitive="true" conf="*->*,!sources,!javadoc"/>
+        <dependency org="commons-codec" name="commons-codec" transitive="false" rev="1.6" conf="*->*,!sources,!javadoc" />
+        <dependency org="commons-collections" name="commons-collections" rev="3.2.1" transitive="false" conf="*->*,!sources,!javadoc" />
+        <dependency org="commons-configuration" name="commons-configuration" rev="1.5" transitive="false" conf="*->*,!sources,!javadoc" />
+        <dependency org="commons-digester" name="commons-digester" rev="2.0" transitive="false" conf="*->*,!sources,!javadoc" />
+        <dependency org="commons-httpclient" name="commons-httpclient" rev="3.1" transitive="false" conf="*->*,!sources,!javadoc" />
+        <dependency org="commons-io" name="commons-io" transitive="false" rev="2.4" conf="*->*,!sources,!javadoc" />
+        <dependency org="commons-logging" name="commons-logging" rev="1.1.3" transitive="false" conf="*->*,!sources,!javadoc" />
+        <dependency org="javax.activation" name="activation" rev="1.1" transitive="false" conf="*->*,!sources,!javadoc" />
+        <dependency org="javax.mail" name="mail" rev="1.4.3" transitive="false" conf="*->*,!sources,!javadoc" />
+        <dependency org="javax.validation" name="validation-api" rev="1.0.CR5" transitive="false" conf="*->*,!sources,!javadoc" />
+        <dependency org="javax.websocket" name="javax.websocket-api" rev="1.1" transitive="false" conf="*->*,!sources,!javadoc"/>
+        <dependency org="javax.ws.rs" name="javax.ws.rs-api" rev="2.0.1" conf="*->*,!sources,!javadoc" />
+        <dependency org="junit" name="junit" rev="4.11" transitive="false" conf="*->*,!sources,!javadoc" />
+        <dependency org="log4j" name="log4j" rev="1.2.17" transitive="false" conf="*->*,!sources,!javadoc"/>
+        <dependency org="mysql" name="mysql-connector-java" rev="5.1.30" transitive="false" conf="*->*,!sources,!javadoc" />
+        <dependency org="net.sf.ehcache" name="ehcache-core" rev="2.4.7" transitive="false" conf="*->*,!sources,!javadoc" />
+        <dependency org="org.apache.commons" name="commons-lang3" rev="3.1" transitive="false" conf="*->*,!sources,!javadoc" />
+        <dependency org="org.apache.httpcomponents" name="httpclient" rev="4.3.6" transitive="false" conf="*->*,!sources,!javadoc"/>
+        <dependency org="org.apache.httpcomponents" name="httpcore" rev="4.3.3" transitive="false" conf="*->*,!sources,!javadoc"/>
+        <dependency org="org.apache.httpcomponents" name="httpmime" rev="4.3.4" transitive="false" conf="*->*,!sources,!javadoc"/>
+        <dependency org="org.apache.oltu.oauth2" name="org.apache.oltu.oauth2.authzserver" rev="1.0.0" conf="*->*,!sources,!javadoc" />
+        <dependency org="org.apache.oltu.oauth2" name="org.apache.oltu.oauth2.common" rev="1.0.0" conf="*->*,!sources,!javadoc" />
+        <dependency org="org.apache.oltu.oauth2" name="org.apache.oltu.oauth2.dynamicreg.server" rev="1.0.0" conf="*->*,!sources,!javadoc" />
+        <dependency org="org.apache.oltu.oauth2" name="org.apache.oltu.oauth2.httpclient4" rev="1.0.0" conf="*->*,!sources,!javadoc" />
+        <dependency org="org.apache.oltu.oauth2" name="org.apache.oltu.oauth2.resourceserver" rev="1.0.0" conf="*->*,!sources,!javadoc" />
+        <dependency org="org.apache.velocity" name="velocity" rev="1.7" transitive="false" conf="*->*,!sources,!javadoc" />
+        <dependency org="org.codehaus.jettison" name="jettison" rev="1.3.7" conf="*->*,!sources,!javadoc" />
+        <dependency org="org.eclipse.persistence" name="eclipselink" rev="2.5.1"  conf="*->*,!sources,!javadoc"/>
+        <dependency org="org.eclipse.persistence" name="javax.persistence" rev="2.0.0" conf="*->*,!sources,!javadoc"/>
+        <dependency org="org.freemarker" name="freemarker" rev="2.3.14"  transitive="false" conf="*->*,!sources,!javadoc" />
+        <dependency org="org.hamcrest" name="hamcrest-core" rev="1.3"  transitive="false" conf="*->*,!sources,!javadoc" />
+        <dependency org="org.hibernate" name="hibernate-validator" rev="4.0.0.CR1" transitive="false" conf="*->*,!sources,!javadoc" />
+        <dependency org="org.jasypt" name="jasypt"  rev="1.5" transitive="false" conf="*->*,!sources,!javadoc" />
+        <dependency org="org.json" name="json" rev="20140107" transitive="false" conf="*->*,!sources,!javadoc" />
+        <dependency org="org.jvnet" name="mimepull" rev="1.6" transitive="false" conf="*->*,!sources,!javadoc"/>
+        <dependency org="org.mockito" name="mockito-all" rev="1.8.5" transitive="false" conf="*->*,!sources,!javadoc" />
+        <dependency org="org.quartz-scheduler" name="quartz" rev="2.2.1" transitive="false" conf="*->*,!sources,!javadoc" />
+        <dependency org="org.slf4j" name="slf4j-log4j12" rev="1.7.12" conf="*->*,!sources,!javadoc" />
+        <dependency org="org.springframework" name="spring" rev="2.5.6" transitive="false" conf="*->*,!sources,!javadoc" />
+        <dependency org="org.twitter4j" name="twitter4j-core" rev="2.1.8" transitive="false" conf="*->*,!sources,!javadoc" />
+        <dependency org="taglibs" name="standard" rev="1.1.2" transitive="false" conf="*->*,!sources,!javadoc" />
+        <dependency org="xerces" name="xerces" rev="2.4.0" transitive="false" conf="*->*,!sources,!javadoc" />
+        <dependency org="xerces" name="xercesImpl" rev="2.9.1" transitive="false" conf="*->*,!sources,!javadoc" />
+    </dependencies>
+</ivy-module>

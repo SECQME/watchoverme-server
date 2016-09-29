@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="1.0" xmlns="http://java.sun.com/xml/ns/persistence" 
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd">
+  <persistence-unit name="secqme" transaction-type="RESOURCE_LOCAL">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+
+    <class>com.secqme.domain.model.CountryVO</class>
+    <class>com.secqme.domain.model.UserVO</class>
+    <class>com.secqme.domain.model.ContactVO</class>
+    <class>com.secqme.domain.model.event.SecqMeEventVO</class>
+    <class>com.secqme.domain.model.event.EventLogVO</class>
+    <class>com.secqme.domain.model.BillingPkgVO</class>
+    <class>com.secqme.domain.model.SMSGateWayVO</class>
+    <class>com.secqme.domain.model.SMSLogVO</class>
+    <class>com.secqme.domain.model.SocialNetworkVO</class>
+    <class>com.secqme.domain.model.TrackingLogVO</class>
+    <class>com.secqme.domain.model.BillingLogVO</class>
+    <class>com.secqme.domain.model.UserSNSConfigVO</class>
+    <class>com.secqme.domain.model.MarketVO</class>
+    <class>com.secqme.domain.model.MarketBillingPkgVO</class>
+
+    <properties>
+      <property name="eclipselink.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+      <property name="eclipselink.jdbc.url" value="jdbc:mysql://localhost/testdb?characterEncoding=utf8"/>
+      <property name="eclipselink.jdbc.user" value="dbadmin"/>
+      <property name="eclipselink.jdbc.password" value="dbadmin123"/>
+      <property name="eclipselink.weaving" value="static"/>
+      <property name="eclipselink.cache.shared.default" value="false"/>
+    </properties>
+  </persistence-unit>
+</persistence>

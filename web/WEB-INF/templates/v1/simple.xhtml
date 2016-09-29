@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+      dir="auto">
+<f:view contentType="text/html">
+    <h:head>
+        <meta charset="utf-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <meta property="og:title" content="Watch Over Me - award-winning app that turns your smartphone into a powerful safety device"/>
+        <meta property="og:type" content="website"/>
+        <meta property="og:url" content="http://watchovermeapp.com"/>
+        <meta property="og:image" content="http://watchovermeapp.com/img/fb-post-img.png"/>
+        <title>Watch Over Me</title>
+        <link rel="shortcut icon" href="img/logo-blue.png"/>
+        <link rel="stylesheet" href="newcss/bootstrap.css"/>
+        <link rel="stylesheet" href="newcss/main.css"/>
+    </h:head>
+
+    <h:body pt:dir="auto">
+        <ui:insert name="content"></ui:insert>
+
+        <script type="text/javascript" src="js/jquery-1.11.0.min.js"></script>
+        <script type="text/javascript" src="js/bootstrap.min.js"></script>
+
+        <ui:insert name="scripts"></ui:insert>
+
+        <ui:insert name="ga" >
+            <ui:include src="_ga.xhtml" />
+        </ui:insert>
+    </h:body>
+</f:view>
+</html>

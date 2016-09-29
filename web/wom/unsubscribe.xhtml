@@ -1,0 +1,30 @@
+<ui:composition
+        template="/WEB-INF/templates/v1/simple.xhtml"
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+        xmlns:ui="http://java.sun.com/jsf/facelets">
+    <ui:define name="content">
+        <h:form>
+            <div class="container error-page">
+                <div class="row">
+                    <div class="col-sm-6 col-sm-offset-3 error-text">
+                        <div class="error-header">
+                            <img src="img/logo-blue-long.png"/>
+                        </div>
+                        <h2>ARE YOU SURE?</h2>
+                        <p>We are sorry to see you go :( But hey, no hard feelings. Please, just make sure you keep yourself safe. And we just have to ask one last time: do you really really want to part ways?</p>
+                        <h:inputHidden value="#{mandrillUnsubscribeEmailBean.subscribeToken}" />
+                        <h:inputHidden value="#{mandrillUnsubscribeEmailBean.recipientEmail}" />
+                        <div class="no-thanks-button">
+                            <h:commandButton value="YES, UNSUBSCRIBE ME" action="#{mandrillUnsubscribeEmailBean.processUnsubscribe}" class="btn btn-warning"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>
